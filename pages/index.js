@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import MeetupList from "../components/meetups/MeetupList";
 const DUMMY_MEETUPS = [
   {
@@ -18,14 +17,22 @@ const DUMMY_MEETUPS = [
     description: "random",
   },
 ];
-function HomePage() {
-  const [loadedMeetups, setLoadedMeetups] = useState([]);
-  // doing like this nextjs gets snapshot of first render cycle for pre rendering but useEffect works after page component is rendered so 
-  // in this case we can see in page source that it would be empty (not consisting of meetups)
-	useEffect(()=>{
-		setLoadedMeetups(DUMMY_MEETUPS);
-	},[]);	
-  return <MeetupList meetups={loadedMeetups} />;
+function HomePage(props) {
+	// console.log(props);
+	// console.log('Home Page',props);
+  return <MeetupList meetups={props.meetups} />;
+}
+
+export async function getStaticProps(){
+	// console.log('hi');
+	// fetch data from API or take to some database
+	return {
+		// here props is the props which we receive in above component.
+		// this is how we can move data fetching away from client side to the build process side 
+		props:{
+			meetups:DUMMY_MEETUPS
+		}
+	};
 }
 
 export default HomePage;
