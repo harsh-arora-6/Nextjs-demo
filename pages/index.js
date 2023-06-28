@@ -39,6 +39,8 @@ export async function getStaticProps() {
 	const meetupsCollection = db.collection("meetups");
 
 	const meetups = await meetupsCollection.find().toArray();
+
+	client.close();
   return {
     // here props is the props which we receive in above component.
     // this is how we can move data fetching away from client side to the build process side
@@ -53,7 +55,7 @@ export async function getStaticProps() {
     },
     // time in seconds after which the page should be re pre-rendered with the new data.
     // page is updated regularly after deployment(not only at build time)
-    revalidate: 10,
+    revalidate: 1,
   };
 }
 
