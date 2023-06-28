@@ -1,14 +1,22 @@
-import { MongoClient,ObjectId } from "mongodb";
+import { MongoClient, ObjectId } from "mongodb";
 import MeetupDetail from "../../components/meetups/MeetupDetail";
+import { Fragment } from "react";
+import Head from 'next/head';
 
 function MeetupDetails(props) {
   return (
-    <MeetupDetail
-      image={props.meetupData.image}
-      title={props.meetupData.title}
-      address={props.meetupData.address}
-      description={props.meetupData.description}
-    />
+    <Fragment>
+      <Head>
+        <title>{props.title}</title>
+        <meta name="description" content={props.description} />
+      </Head>
+      <MeetupDetail
+        image={props.meetupData.image}
+        title={props.meetupData.title}
+        address={props.meetupData.address}
+        description={props.meetupData.description}
+      />
+    </Fragment>
   );
 }
 // this function is required in dynamic pages when using getStaticProps
@@ -49,7 +57,9 @@ export async function getStaticProps(context) {
 
   const meetupsCollection = db.collection("meetups");
 
-  const selectedMeetup = await meetupsCollection.findOne({_id: ObjectId(meetupId)});
+  const selectedMeetup = await meetupsCollection.findOne({
+    _id: ObjectId(meetupId),
+  });
 
   client.close();
   return {
@@ -58,9 +68,9 @@ export async function getStaticProps(context) {
     props: {
       meetupData: {
         id: meetupId,
-        image:selectedMeetup.image,
+        image: selectedMeetup.image,
         title: selectedMeetup.title,
-        address:selectedMeetup.address,
+        address: selectedMeetup.address,
         description: selectedMeetup.description,
       },
     },
