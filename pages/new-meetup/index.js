@@ -12,7 +12,7 @@ function NewMeetupPage() {
       },
     });
     const resData = await response.json();
-    console.log(resData);
+    // console.log(resData);
   }
   return (
     <Fragment>
