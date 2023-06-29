@@ -1,7 +1,7 @@
 import { MongoClient, ObjectId } from "mongodb";
 import MeetupDetail from "../../components/meetups/MeetupDetail";
 import { Fragment } from "react";
-import Head from 'next/head';
+import Head from "next/head";
 
 function MeetupDetails(props) {
   return (
@@ -36,9 +36,10 @@ export async function getStaticPaths() {
   const meetups = await meetupsCollection.find({}, { _id: 1 }).toArray();
 
   client.close();
-
+  // with true it would immediately return an empty page and then pull down the dynamically generated content once thats done so we need to handle the case when page doesn't have data yet
+  // with blocking user won't see anything until the page is pre generated (new page)
   return {
-    fallback: false,
+    fallback: "blocking",
     paths: meetups.map((meetup) => ({
       params: { meetupId: meetup._id.toString() },
     })),
